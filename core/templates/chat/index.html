@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 id="app">Jopa</h1>
+<form id="form">
+    <input type="text" name="message">
+    <button type="submit">Send</button>
+</form>
+
+<div id="messages">
+    {% for message in messages %}
+        <div>
+            <p>{{ message.author.username }} - {{ message.content }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    {% if user.is_authenticated %}
+    var socket = new WebSocket('ws://localhost:8000/ws/chats/');
+    socket.onmessage = function (event) {
+        let data = JSON.parse(event.data);
+        console.log(data)
+        if(data.type === 'error'){
+            console.log(data.message)
+        }
+        if(data.type === 'chat'){
+            let messages = document.getElementById('messages')
+
+            messages.insertAdjacentHTML('beforeend', `<div>
+                            <p>${data.sender} - ${data.message}</p>
+                        </div>`)
+        }
+    }
+    let form = document.getElementById('form')
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        let message = event.target.message.value
+        let user = {{ user.id }}
+        socket.send(JSON.stringify({
+            'message': message,
+            'user': user
+        }))
+        form.reset()
+    })
+
+    {% else %}
+    let title = document.getElementById('app')
+    title.innerHTML = 'You are not logged in'
+    {% endif %}
+</script>
+
+</body>
+</html>
