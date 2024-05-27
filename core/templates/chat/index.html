@@ -11,18 +11,42 @@
     <input type="text" name="message">
     <button type="submit">Send</button>
 </form>
-
+<div id="chats">
+    {% for chat in chats %}
+    <a href="{% url 'chat' chat.id %}" class="chat-link" data-chat-id="{{ chat.id }}">{{ chat.name }}</a>
+    {% endfor %}
+</div>
 <div id="messages">
     {% for message in messages %}
-        <div>
-            <p>{{ message.author.username }} - {{ message.content }}</p>
-        </div>
+    <div>
+        <p>{{ message.author.username }} - {{ message.content }}</p>
+    </div>
     {% endfor %}
 </div>
 
 <script>
     {% if user.is_authenticated %}
     var socket = new WebSocket('ws://localhost:8000/ws/chats/');
+    let chats = document.querySelectorAll('.chat-link')
+    chats.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault()
+            let chat_id = this.getAttribute('data-chat-id')
+            fetch('{% url "chat" chat_id=0%}'.replace('0', chat_id))
+                .then(response => response.json())
+                .then(data => {
+                console.log(data.messages)
+                data.messages.forEach(message => {
+                    let messages = document.getElementById('messages')
+                    messages.insertAdjacentHTML('beforeend', `<div>
+                            <p>${message.sender} - ${message.content}</p>
+                        </div>`)
+                })
+                let title = document.getElementById('app')
+                title.innerHTML = data.chat.name
+            })
+        })
+    })
     socket.onmessage = function (event) {
         let data = JSON.parse(event.data);
         console.log(data)
