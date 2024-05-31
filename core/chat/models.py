@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-
 def upload_file(instance, filename):
     ext = filename.split('.')[-1]
     filename = f'{uuid.uuid4()}.{ext}'
@@ -18,6 +17,9 @@ class Chat(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     room_name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class ChatMessage(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
@@ -27,6 +29,10 @@ class ChatMessage(models.Model):
 
     class Meta:
         abstract = True
+
+    def read_message(self):
+        self.is_read = True
+        self.save()
 
 
 class TextMessage(ChatMessage):
