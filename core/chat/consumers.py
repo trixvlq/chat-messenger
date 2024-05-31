@@ -77,16 +77,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         try:
             print(f'shit')
+            print(text_data)
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
             user_id = text_data_json['user']
             user = await self.get_user(user_id)
-            await self.create_message(self.chat, user, message)
+            msg = await self.create_message(self.chat, user, message)
+            msg = TextMessageSerializer(msg).data
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'new_message',
-                    'message': message,
+                    'message': msg,
                     'sender': user_id
                 }
             )
@@ -97,7 +99,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def new_message(self, event):
         print('chat')
         message = event['message']
-
         user_id = event['sender']
         user = await self.get_user(user_id)
         # if user != self.user:
