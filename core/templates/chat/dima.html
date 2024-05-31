@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/dima.css' %}">
+    <title>Messenger</title>
+</head>
+
+<body>
+<header>
+    <div class="logo">
+        <img src="svg/logo.svg" alt="site logo" id="logoIcon">
+        <h4>Messenger</h4>
+    </div>
+    <div class="right-side">
+        <div class="theme-switcher" id="switcher">
+            <svg width="22" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.031 1.219H10.97V5.53h2.062V1.22Z"></path>
+                <path d="M13.031 18.469H10.97v4.312h2.062V18.47Z"></path>
+                <path d="m18.895 3.646-3.05 3.05 1.46 1.458 3.049-3.05-1.459-1.458Z"></path>
+                <path d="m6.698 15.841-3.05 3.05 1.459 1.458 3.05-3.05-1.46-1.458Z"></path>
+                <path d="M22.781 10.969H18.47v2.062h4.312V10.97Z"></path>
+                <path d="M5.531 10.969H1.22v2.062h4.31V10.97Z"></path>
+                <path d="m17.304 15.846-1.458 1.459 3.05 3.05 1.457-1.46-3.049-3.049Z"></path>
+                <path d="M5.105 3.651 3.646 5.109l3.05 3.05L8.154 6.7l-3.05-3.049Z"></path>
+                <path d="M12 16.781A4.782 4.782 0 1 1 16.781 12 4.787 4.787 0 0 1 12 16.781Z"></path>
+            </svg>
+        </div>
+        <div class="profile">
+            <div class="picture">
+                <img src="images/pfp.jpg" alt="">
+            </div>
+            <!-- change phone_num(?), view profile, logout -->
+            <div class="dropdown">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="m5.25 8.625 6.75 6.75 6.75-6.75"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div class="chats">
+            <div class="title">
+                <h3>Chats</h3>
+            </div>
+            <!-- looking for user's name or something in chat(like in whatsapp) -->
+            <div class="chat-search">
+                <form action="#">
+                    <input type="text" placeholder="Search" id="searchBar">
+                </form>
+            </div>
+            <!-- just the archive(maybe some js)-->
+            <div class="archive">
+                <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7.688v11.437a2.625 2.625 0 0 0 2.625 2.625h12.75A2.625 2.625 0 0 0 21 19.125V7.687a.188.188 0 0 0-.188-.187H3.188A.187.187 0 0 0 3 7.688Zm12.516 7.107L12.53 17.78a.75.75 0 0 1-1.06 0l-2.986-2.985a.764.764 0 0 1-.04-1.049.75.75 0 0 1 1.086-.026l1.72 1.72v-4.92c0-.404.31-.75.714-.77a.75.75 0 0 1 .786.749v4.94l1.72-1.72a.75.75 0 0 1 1.085.026.764.764 0 0 1-.04 1.05Z">
+                    </path>
+                    <path d="M21 2.25H3a1.5 1.5 0 0 0-1.5 1.5v.75A1.5 1.5 0 0 0 3 6h18a1.5 1.5 0 0 0 1.5-1.5v-.75a1.5 1.5 0 0 0-1.5-1.5Z">
+                    </path>
+                </svg>
+                <h5>Archive</h5>
+            </div>
+            <!-- all dms & groups -->
+            <div class="cards">
+                <div class="card">
+                    <div class="pfp">
+                        <img src="images/pfp.jpg" alt="">
+                    </div>
+                    <div class="content">
+                        <div class="top">
+                            <div class="name">
+                                <p>Alex</p>
+                            </div>
+                            <!-- today(9:30AM), yesterday, 20.04.2024 -->
+                            <div class="last-msg-date">
+                                <small>25.05.2024</small>
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="last-msg">
+                                <p>qwertyqwertyqdawdwadadwadwadaw</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+
+                </div>
+            </div>
+        </div>
+        <!-- just for dividing chat and input-zone -->
+        <div class="chat-window">
+            <div class="chat">
+                <div class="upper-chat">
+                    <div class="person">
+                        <div class="pfp">
+                            <img src="images/pfp.jpg" alt="">
+                        </div>
+                        <div class="name">
+                            <p>Alex</p>
+                        </div>
+                    </div>
+                    <!-- call user and stuff like unfriend, view profile, etc. -->
+                    <div class="tools">
+                        <svg id="callUser" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.327 22.5c-.915 0-2.2-.331-4.125-1.407-2.34-1.312-4.15-2.524-6.478-4.846-2.245-2.243-3.337-3.695-4.865-6.476C1.132 6.63 1.426 4.984 1.755 4.28c.392-.842.97-1.345 1.718-1.844a8.263 8.263 0 0 1 1.343-.712l.13-.057c.231-.105.583-.263 1.028-.094.297.112.562.34.978.75.852.84 2.015 2.71 2.445 3.63.288.619.479 1.028.48 1.486 0 .537-.27.95-.598 1.397l-.182.242c-.356.469-.435.604-.383.846.104.486.884 1.933 2.165 3.212 1.281 1.278 2.686 2.008 3.174 2.112.253.054.39-.027.875-.397.069-.053.14-.107.215-.162.5-.372.894-.635 1.418-.635h.003c.456 0 .847.198 1.493.524.844.426 2.771 1.575 3.616 2.427.412.415.64.679.753.976.169.447.01.797-.094 1.031l-.057.129a8.27 8.27 0 0 1-.716 1.34c-.499.745-1.004 1.322-1.846 1.714a3.16 3.16 0 0 1-1.386.304Z"></path>
+                        </svg>
+                        <svg id="infoUser" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
+                            <path d="M12 21.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
+                            <path d="M12 6.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="messages">
+                    <!-- if not group (or from u)-->
+                    <div class="message">
+                        <p>sum text</p>
+                    </div>
+                    <!-- not in group & not from u -->
+                    <div class="message receive">
+                        <p>sum text</p>
+                    </div>
+                    <!-- in group -->
+                    <div class="message receive">
+                        <div class="member-name">
+                            <small>Name</small>
+                        </div>
+                        <div class="text">
+                            <p>sum text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- load file & send message through btn -->
+            <div class="input-zone">
+                <label for="load-files" title="Load file">
+                    <svg width="30" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.13 8.998v6.743a1.878 1.878 0 0 0 3.757 0l.006-8.838a3.186 3.186 0 1 0-6.37 0v8.898a4.477 4.477 0 1 0 8.954 0V7.486"></path>
+                    </svg>
+                </label>
+                <input type="file" value="" id="load-files">
+                <input type="text" id="messageInput" placeholder="Input message">
+                <button id="sendMessage">
+                    <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m22.34 10.642-.007-.003-20.02-8.303a1.104 1.104 0 0 0-1.04.1 1.156 1.156 0 0 0-.523.966v5.31a1.125 1.125 0 0 0 .915 1.105l10.919 2.02a.187.187 0 0 1 0 .368L1.665 14.224a1.125 1.125 0 0 0-.915 1.104v5.31a1.105 1.105 0 0 0 .496.924 1.123 1.123 0 0 0 1.066.097l20.02-8.256.008-.004a1.5 1.5 0 0 0 0-2.757Z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="script.js"></script>
+
+
+</body>
+</html>
