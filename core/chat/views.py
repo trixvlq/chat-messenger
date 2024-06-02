@@ -80,3 +80,6 @@ def upload_file(request):
         }
         return JsonResponse(response_data)
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+def test(request):
+    return render(request, 'chat/test.html')

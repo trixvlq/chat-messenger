@@ -28,6 +28,23 @@
             event.preventDefault()
             let chat_id = this.getAttribute('data-chat-id')
             let chat_socket = new WebSocket('ws://localhost:8000/ws/chat/' + chat_id + '/');
+            function generateMessageHTML(message) {
+                const date = formatDate(message.date_sent);
+                if (message.content) {
+                    return `<p>${message.sender} - ${message.content}</p><span>${date}</span>`;
+                } else if (message.image) {
+                    return `<img src="${message.image}"><p>${message.sender}</p><span>${date}</span>`;
+                } else if (message.file) {
+                    return `<a href="${message.file}" target="_blank">Download File</a><p>${message.sender}</p><span>${date}</span>`;
+                } else if (message.video) {
+                    return `<video controls><source src="${message.video}"></video><p>${message.sender}</p><span>${date}</span>`;
+                } else if (message.audio) {
+                    return `<audio controls><source src="${message.audio}"></audio><p>${message.sender}</p><span>${date}</span>`;
+                } else if (message.sticker) {
+                    return `<img src="${message.sticker}"><p>${message.sender}</p><span>${date}</span>`;
+                }
+                return '';
+            }
             chat_socket.onmessage = function (event) {
                 let data = JSON.parse(event.data);
                 console.log(data)
@@ -36,10 +53,10 @@
                 }
                 if(data.type === 'new_message'){
                     let messages = document.getElementById('messages')
-                    console.log(data)
-                    messages.insertAdjacentHTML('beforeend', `<div>
-                            <p>${data.sender} - ${data.message}</p>
-                        </div>`)
+                    const messageHTML = generateMessageHTML(data.message);
+                    if (messageHTML) {
+                        messages.insertAdjacentHTML('beforeend', `<div>${messageHTML}</div>`);
+                    }
                 }
             }
 
@@ -53,36 +70,10 @@
                 .then(data => {
                 data.messages.forEach(message => {
                     let messages = document.getElementById('messages')
-                    if(message.content){
-                        messages.insertAdjacentHTML('beforeend', `<div>
-                                <p>${message.sender} - ${message.content}</p><span>${formatDate(message.date_sent)}</span>
-                            </div>`)
-                    }
-                    if(message.image){
-                        messages.insertAdjacentHTML('beforeend', `<div>
-                                <img src = "${message.image}">
-                                <p>${message.sender}</p><span>${formatDate(message.date_sent)}</span>
-                            </div>`)
-                    }
-                    if(message.file){
-                        messages.insertAdjacentHTML('beforeend', `<div>
-                                <p>${message.sender} - ${message.content}</p><span>${formatDate(message.date_sent)}</span>
-                            </div>`)
-                    }
-                    if(message.video){
-                        messages.insertAdjacentHTML('beforeend', `<div>
-                                <p>${message.sender} - ${message.content}</p><span>${formatDate(message.date_sent)}</span>
-                            </div>`)
-                    }
-                    if(message.audio){
-                        messages.insertAdjacentHTML('beforeend', `<div>
-                                <p>${message.sender} - ${message.content}</p><span>${formatDate(message.date_sent)}</span>
-                            </div>`)
-                    }
-                    if(message.sticker){
-                        messages.insertAdjacentHTML('beforeend', `<div>
-                                <p>${message.sender} - ${message.content}</p><span>${formatDate(message.date_sent)}</span>
-                            </div>`)
+                    console.log(message)
+                    const messageHTML = generateMessageHTML(message);
+                    if (messageHTML) {
+                        messages.insertAdjacentHTML('beforeend', `<div>${messageHTML}</div>`);
                     }
 
 
@@ -97,6 +88,7 @@
                 event.preventDefault();
                 let message = event.target.message.value
                 let user = {{ user.id }}
+
                 chat_socket.send(JSON.stringify({
                     'message': message,
                     'user': user
