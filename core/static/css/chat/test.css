@@ -1,63 +1,3 @@
-/* HEADER */
-header {
-    padding: 10px 15%;
-    display: grid;
-    grid-template-columns: auto auto;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px color-mix(in oklab, var(--background), var(--text) 20%) solid;
-}
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-#logoIcon {
-    width: 35px;
-    fill: var(--secondary);
-}
-.right-side, .profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.profile .picture img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-}
-#switcher {
-    cursor: pointer;
-}
-.dropdown svg {
-    width: 20px;
-    stroke-width: 2px;
-    cursor: pointer;
-}
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: color-mix(in oklab, var(--background), var(--text) 10%);
-    min-width: 150px;
-    z-index: 1;
-}
-.dropdown-content a {
-    color: var(--text);
-    text-decoration: none;
-    padding: 10px 12px;
-    display: block;
-}
-.dropdown-content a:hover {
-    background-color: color-mix(in oklab, var(--background), var(--text) 15%);
-}
-.show {
-    display: block;
-}
-
 main {
     margin: 35px 15%;
     color: white;
@@ -113,21 +53,30 @@ main {
     scrollbar-color: var(--secondary);
 }
 .card {
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content auto;
     align-items: center;
     margin-bottom: 5px;
     gap: 10px;
     padding: 10px;
     border-radius: 7px;
-    background-color: var(--secondary);
+    background: none;
     cursor: pointer;
     color: white;
     text-decoration: none;
+    position: relative;
+}
+.chat-pin {
+    position: absolute;
+    width: 20px;
+    top: 0;
+    left: 0;
+    right: 10px;
 }
 .card:hover {
     background-color: color-mix(in oklab, var(--secondary), black 10%);
 }
-.card .pfp img {
+.card img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -139,7 +88,6 @@ main {
 }
 .card .content {
     overflow: hidden;
-    justify-self: stretch;
 }
 
 /* CHAT */
@@ -217,6 +165,11 @@ main {
     cursor: pointer;
     padding: 8px;
     border-radius: 7px;
+    width: 35px;
+}
+.input-zone label svg {
+    stroke: white;
+    fill: none;
 }
 .messages {
     background-color: color-mix(in oklab, var(--secondary), black 15%);

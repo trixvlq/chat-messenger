@@ -78,9 +78,7 @@
             <!-- all dms & groups -->
             <div class="cards">
                 <a class="card" href="#">
-                    <div class="pfp">
-                        <img src="{% static 'images/pfp.png' %}" alt="">
-                    </div>
+                    <img src="{% static 'images/pfp.png' %}" alt="">
                     <div class="content">
                         <div class="top">
                             <div class="name">
@@ -97,10 +95,38 @@
                             </div>
                         </div>
                     </div>
+                    <!-- <div class="chat-pin">
+                        <svg id="archive-chat" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 7.688v11.437a2.625 2.625 0 0 0 2.625 2.625h12.75A2.625 2.625 0 0 0 21 19.125V7.687a.188.188 0 0 0-.188-.187H3.188A.187.187 0 0 0 3 7.688Zm12.516 7.107L12.53 17.78a.75.75 0 0 1-1.06 0l-2.986-2.985a.764.764 0 0 1-.04-1.049.75.75 0 0 1 1.086-.026l1.72 1.72v-4.92c0-.404.31-.75.714-.77a.75.75 0 0 1 .786.749v4.94l1.72-1.72a.75.75 0 0 1 1.085.026.764.764 0 0 1-.04 1.05Z"></path>
+                            <path d="M21 2.25H3a1.5 1.5 0 0 0-1.5 1.5v.75A1.5 1.5 0 0 0 3 6h18a1.5 1.5 0 0 0 1.5-1.5v-.75a1.5 1.5 0 0 0-1.5-1.5Z"></path>
+                        </svg>
+                        <svg id="pin-chat" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.13 8.998v6.743a1.878 1.878 0 0 0 3.757 0l.006-8.838a3.186 3.186 0 1 0-6.37 0v8.898a4.477 4.477 0 1 0 8.954 0V7.486"></path>
+                        </svg>
+                        <svg id="delete-chat" fill="darkred" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.25 4.5h-4.5V3.375A1.875 1.875 0 0 0 13.875 1.5h-3.75A1.875 1.875 0 0 0 8.25 3.375V4.5h-4.5a.75.75 0 0 0 0 1.5h.797l.89 14.293c.067 1.259 1.032 2.207 2.25 2.207h8.625c1.225 0 2.17-.927 2.25-2.203L19.453 6h.797a.75.75 0 1 0 0-1.5Zm-11.223 15H9a.75.75 0 0 1-.75-.723l-.375-10.5a.75.75 0 0 1 1.5-.054l.375 10.5a.75.75 0 0 1-.723.777Zm3.723-.75a.75.75 0 1 1-1.5 0V8.25a.75.75 0 1 1 1.5 0v10.5Zm1.5-14.25h-4.5V3.375A.37.37 0 0 1 10.125 3h3.75a.371.371 0 0 1 .375.375V4.5Zm1.5 14.277a.75.75 0 0 1-.75.723h-.027a.75.75 0 0 1-.723-.777l.375-10.5a.75.75 0 0 1 1.5.054l-.375 10.5Z"></path>
+                        </svg>
+                    </div> -->
                 </a>
-                <div class="card">
-
-                </div>
+                <a class="card" href="#">
+                    <img src="{% static 'images/pfp.png' %}" alt="">
+                    <div class="content">
+                        <div class="top">
+                            <div class="name">
+                                <p>Mark</p>
+                            </div>
+                            <!-- today(9:30AM), yesterday, 20.04.2024 -->
+                            <div class="last-msg-date">
+                                <small>20.05.2024</small>
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="last-msg">
+                                <p>yes</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
         <!-- just for dividing chat and input-zone -->
@@ -237,9 +263,10 @@
             <!-- load file & send message through btn -->
             <div class="input-zone">
                 <label for="load-files" title="Load file">
-                    <svg width="30" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.13 8.998v6.743a1.878 1.878 0 0 0 3.757 0l.006-8.838a3.186 3.186 0 1 0-6.37 0v8.898a4.477 4.477 0 1 0 8.954 0V7.486"></path>
+                    <svg stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.75 8.25h1.875a1.875 1.875 0 0 1 1.875 1.875v9.75a1.875 1.875 0 0 1-1.875 1.875H6.375A1.875 1.875 0 0 1 4.5 19.875v-9.75A1.875 1.875 0 0 1 6.375 8.25H8.25"></path>
+                        <path d="M8.25 12.75 12 16.5l3.75-3.75"></path>
+                        <path d="M12 2.25v13.5"></path>
                     </svg>
                 </label>
                 <input type="file" value="" id="load-files">
