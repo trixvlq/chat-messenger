@@ -5,8 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/chat/test.css' %}">
+    <script defer src="{% static 'js/header.js' %}"></script>
+    <script defer src="{% static 'js/chat/test.js' %}"></script>
     <title>Messenger</title>
 </head>
 
@@ -26,11 +28,9 @@
         <h4>Wger</h4>
     </div>
     <div class="right-side">
-        <div class="theme-switcher" id="switcher">
-            <svg width="22" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 1.5C6.201 1.5 1.5 6.201 1.5 12S6.201 22.5 12 22.5 22.5 17.799 22.5 12 17.799 1.5 12 1.5ZM6.034 17.966A8.437 8.437 0 0 1 12 3.562v16.875a8.383 8.383 0 0 1-5.966-2.47Z"></path>
-            </svg>
-        </div>
+        <svg id="switcher" width="22" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1.5C6.201 1.5 1.5 6.201 1.5 12S6.201 22.5 12 22.5 22.5 17.799 22.5 12 17.799 1.5 12 1.5ZM6.034 17.966A8.437 8.437 0 0 1 12 3.562v16.875a8.383 8.383 0 0 1-5.966-2.47Z"></path>
+        </svg>
         <div class="profile">
             <div class="picture">
                 <img src="{% static 'images/pfp.png' %}" alt="">
@@ -280,7 +280,5 @@
         </div>
     </div>
 </main>
-<script src="{% static 'js/chat/script.js' %}"></script>
 </body>
-
 </html>

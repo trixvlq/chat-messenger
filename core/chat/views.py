@@ -55,11 +55,6 @@ def chat(request, chat_id):
     print(context)
     return JsonResponse(context)
 
-
-def dima(request):
-    return render(request, 'chat/dima.html')
-
-
 @csrf_exempt
 def upload_file(request):
     if request.method == 'POST':
@@ -83,6 +78,3 @@ def upload_file(request):
 
 def test(request):
     return render(request, 'chat/test.html')
-
-def sign_up(request):
-    return render(request, 'registration/sign_up.html')
