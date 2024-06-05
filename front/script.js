@@ -1,3 +1,4 @@
+
 let root = document.documentElement;
 
 document.getElementById("switcher").addEventListener("click", function() {

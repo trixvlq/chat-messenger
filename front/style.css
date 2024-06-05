@@ -36,7 +36,7 @@ small {font-size: 0.750rem; /* 12px */}
     --text-800: rgb(43, 47, 59);
     --text-900: rgb(22, 24, 29);
     --text-950: rgb(11, 12, 15);
-
+  
     --background-50: rgb(240, 242, 245);
     --background-100: rgb(224, 229, 235);
     --background-200: rgb(194, 203, 214);
@@ -48,7 +48,7 @@ small {font-size: 0.750rem; /* 12px */}
     --background-800: rgb(41, 50, 61);
     --background-900: rgb(20, 25, 31);
     --background-950: rgb(10, 12, 15);
-
+  
     --primary-50: rgb(239, 241, 246);
     --primary-100: rgb(222, 228, 237);
     --primary-200: rgb(189, 201, 219);
@@ -60,7 +60,7 @@ small {font-size: 0.750rem; /* 12px */}
     --primary-800: rgb(36, 48, 66);
     --primary-900: rgb(18, 24, 33);
     --primary-950: rgb(9, 12, 16);
-
+  
     --secondary-50: rgb(237, 241, 247);
     --secondary-100: rgb(220, 228, 239);
     --secondary-200: rgb(185, 201, 223);
@@ -72,7 +72,7 @@ small {font-size: 0.750rem; /* 12px */}
     --secondary-800: rgb(32, 48, 70);
     --secondary-900: rgb(16, 24, 35);
     --secondary-950: rgb(8, 12, 18);
-
+  
     --accent-50: rgb(237, 241, 248);
     --accent-100: rgb(218, 227, 241);
     --accent-200: rgb(181, 199, 227);
@@ -97,7 +97,7 @@ small {font-size: 0.750rem; /* 12px */}
     --text-800: rgb(196, 200, 212);
     --text-900: rgb(226, 228, 233);
     --text-950: rgb(240, 241, 244);
-
+  
     --background-50: rgb(10, 12, 15);
     --background-100: rgb(20, 25, 31);
     --background-200: rgb(41, 50, 61);
@@ -109,7 +109,7 @@ small {font-size: 0.750rem; /* 12px */}
     --background-800: rgb(194, 203, 214);
     --background-900: rgb(224, 229, 235);
     --background-950: rgb(240, 242, 245);
-
+  
     --primary-50: rgb(9, 12, 16);
     --primary-100: rgb(18, 24, 33);
     --primary-200: rgb(36, 48, 66);
@@ -121,7 +121,7 @@ small {font-size: 0.750rem; /* 12px */}
     --primary-800: rgb(189, 201, 219);
     --primary-900: rgb(222, 228, 237);
     --primary-950: rgb(239, 241, 246);
-
+  
     --secondary-50: rgb(8, 12, 18);
     --secondary-100: rgb(16, 24, 35);
     --secondary-200: rgb(32, 47, 70);
@@ -133,7 +133,7 @@ small {font-size: 0.750rem; /* 12px */}
     --secondary-800: rgb(185, 200, 223);
     --secondary-900: rgb(220, 228, 239);
     --secondary-950: rgb(237, 241, 247);
-
+  
     --accent-50: rgb(7, 11, 18);
     --accent-100: rgb(14, 23, 37);
     --accent-200: rgb(28, 46, 74);

@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/registration/sign_up.css' %}">
+    <script defer src="{% static 'js/header.js' %}"></script>
+    <title>Authorization</title>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 101 100" xmlns="http://www.w3.org/2000/svg" id="logoIcon">
+                <path
+                    d="M0.5 20C0.5 8.9543 9.45431 0 20.5 0H80.5C91.5457 0 100.5 8.95431 100.5 20V80C100.5 91.0457 91.5457 100 80.5 100H20.5C9.4543 100 0.5 91.0457 0.5 80V20Z" />
+                <path
+                    d="M80.8445 14.9823C79.8827 16.8101 78.5362 20.081 77.7668 22.1013C74.112 31.6253 68.3412 44.1316 60.4545 54.1367C51.2213 65.8734 38.718 78.5722 20.5402 88L14 82.0354C31.8893 73.4734 44.2003 62.0253 54.1067 49.4228C61.9934 39.2253 66.8024 28.5468 70.0725 19.119C70.7457 17.1949 71.6113 14.0203 72.0922 12L80.8445 14.9823ZM30.0619 26.3342C39.5837 32.3949 52.9526 42.0152 60.2622 47.8835C69.8801 55.7722 79.4018 64.1418 87 72.4152L80.9407 79.0532C72.9578 69.8177 64.5902 62.2177 54.9723 54.1367C48.0474 48.3646 35.5441 38.8405 24.9644 32.3949L30.0619 26.3342Z"
+                    fill="#E6E7E8" />
+                <path d="M18.5 41L14.5 46C21.5 50.5 27.5 56 27.5 56L32 51.5C26.5 46.5 22.3333 43.1667 18.5 41Z"
+                    fill="#E6E7E8" stroke="#E6E7E8" />
+            </svg>
+            <!-- <img src="{% static 'svg/logo.svg' %}" alt="site logo" id="logoIcon"> -->
+            <h4>Wger</h4>
+        </div>
+        <div class="right-side">
+            <svg id="switcher" width="22" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12 1.5C6.201 1.5 1.5 6.201 1.5 12S6.201 22.5 12 22.5 22.5 17.799 22.5 12 17.799 1.5 12 1.5ZM6.034 17.966A8.437 8.437 0 0 1 12 3.562v16.875a8.383 8.383 0 0 1-5.966-2.47Z">
+                </path>
+            </svg>
+        </div>
+    </header>
+    <main>
+        <div class="card">
+            <h3>Sign Up</h3>
+            <form action="#">
+                <div class="username">
+                    <p>Username</p>
+                    <div class="input-group">
+                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.592 3.027C14.68 2.042 13.406 1.5 12 1.5c-1.414 0-2.692.54-3.6 1.518-.918.99-1.365 2.334-1.26 3.786C7.348 9.67 9.528 12 12 12c2.472 0 4.648-2.33 4.86-5.195.106-1.439-.344-2.78-1.268-3.778Z"></path>
+                            <path d="M20.25 22.5H3.75a1.454 1.454 0 0 1-1.134-.522 1.655 1.655 0 0 1-.337-1.364c.396-2.195 1.63-4.038 3.571-5.333C7.574 14.132 9.758 13.5 12 13.5c2.242 0 4.426.633 6.15 1.781 1.94 1.294 3.176 3.138 3.571 5.332.091.503-.032 1-.336 1.365a1.453 1.453 0 0 1-1.135.522Z"></path>
+                        </svg>
+                        <input type="text" id="usernameInput">
+                    </div>
+                </div>
+                <div class="email">
+                    <p>Email</p>
+                    <div class="input-group">
+                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.875 3.75H4.125A2.628 2.628 0 0 0 1.5 6.375v11.25a2.628 2.628 0 0 0 2.625 2.625h15.75a2.627 2.627 0 0 0 2.625-2.625V6.375a2.627 2.627 0 0 0-2.625-2.625Zm-.665 4.342-6.75 5.25a.75.75 0 0 1-.92 0l-6.75-5.25a.75.75 0 1 1 .92-1.184L12 11.8l6.29-4.892a.75.75 0 0 1 .92 1.184Z"></path>
+                        </svg>
+                        <input type="email" id="emailInput">
+                    </div>
+                </div>
+                <div class="password">
+                    <p>Password</p>
+                    <div class="input-group">
+                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.25 9h-.75V5.25a4.5 4.5 0 1 0-9 0V9h-.75a3.003 3.003 0 0 0-3 3v8.25a3.003 3.003 0 0 0 3 3h10.5a3.004 3.004 0 0 0 3-3V12a3.004 3.004 0 0 0-3-3ZM15 9H9V5.25a3 3 0 1 1 6 0V9Z"></path>
+                        </svg>
+                        <input type="password" id="passwordInput">
+                    </div>
+                </div>
+                <button>Submit</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
