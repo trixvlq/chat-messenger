@@ -8,8 +8,13 @@
 </head>
 <body>
 <h1 id="app">Jopa</h1>
-<form id="form">
+<form id="form" enctype="multipart/form-data">
+    {% csrf_token %}
     <input type="text" name="message">
+    <input type="file" name="file">
+    <input type="file" name="image" accept="image/*">
+    <input type="file" name="video" accept="video/*">
+    <input type="file" name="audio" accept="audio/*">
     <button type="submit">Send</button>
 </form>
 <div id="chats">
@@ -23,25 +28,30 @@
 <script>
     {% if user.is_authenticated %}
     let chats = document.querySelectorAll('.chat-link')
+    let chat_socket = null
     chats.forEach(function (link) {
         link.addEventListener('click', function (event) {
             event.preventDefault()
             let chat_id = this.getAttribute('data-chat-id')
-            let chat_socket = new WebSocket('ws://localhost:8000/ws/chat/' + chat_id + '/');
+            if(chat_socket != null) {
+                chat_socket.close();
+                document.getElementById('messages').innerHTML = '';
+            }
+            chat_socket = new WebSocket('ws://localhost:8000/ws/chat/' + chat_id + '/');
             function generateMessageHTML(message) {
                 const date = formatDate(message.date_sent);
                 if (message.content) {
-                    return `<p>${message.sender} - ${message.content}</p><span>${date}</span>`;
+                    return `<p>${message.author_name} - ${message.content}</p><span>${date}</span>`;
                 } else if (message.image) {
-                    return `<img src="${message.image}"><p>${message.sender}</p><span>${date}</span>`;
+                    return `<img src="${message.image}"><p>${message.author_name}</p><span>${date}</span>`;
                 } else if (message.file) {
-                    return `<a href="${message.file}" target="_blank">Download File</a><p>${message.sender}</p><span>${date}</span>`;
+                    return `<a href="${message.file}" target="_blank">Download File</a><p>${message.author_name}</p><span>${date}</span>`;
                 } else if (message.video) {
-                    return `<video controls><source src="${message.video}"></video><p>${message.sender}</p><span>${date}</span>`;
+                    return `<video controls><source src="${message.video}"></video><p>${message.author_name}</p><span>${date}</span>`;
                 } else if (message.audio) {
-                    return `<audio controls><source src="${message.audio}"></audio><p>${message.sender}</p><span>${date}</span>`;
+                    return `<audio controls><source src="${message.audio}"></audio><p>${message.author_name}</p><span>${date}</span>`;
                 } else if (message.sticker) {
-                    return `<img src="${message.sticker}"><p>${message.sender}</p><span>${date}</span>`;
+                    return `<img src="${message.sticker}"><p>${message.author_name}</p><span>${date}</span>`;
                 }
                 return '';
             }
@@ -86,13 +96,25 @@
             let form = document.getElementById('form')
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
-                let message = event.target.message.value
-                let user = {{ user.id }}
+                let formData = new FormData(form);
+                formData.append('user',{{ user.id }})
+                let file = formData.get('file');
+                let image = formData.get('image');
+                let video = formData.get('video');
+                let audio = formData.get('audio');
+                let messageContent = formData.get('message');
+                let message = {
+                    'message': messageContent,
+                    'user': {{ user.id }},
+                    'file': file ? URL.createObjectURL(file) : null,
+                    'image': image ? URL.createObjectURL(image) : null,
+                    'video': video ? URL.createObjectURL(video) : null,
+                    'audio': audio ? URL.createObjectURL(audio) : null,
+                };
 
-                chat_socket.send(JSON.stringify({
-                    'message': message,
-                    'user': user
-                }))
+                console.log(message)
+
+                chat_socket.send(JSON.stringify({message}));
                 form.reset()
             })
 
