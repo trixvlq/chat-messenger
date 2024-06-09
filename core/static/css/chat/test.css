@@ -1,29 +1,46 @@
 main {
-    margin: 35px 15%;
+    margin: 5vh 10vw;
+    max-width: 100vw;
+    max-height: 100vw;
     color: white;
 }
 .container {
     display: grid;
     grid-template-columns: 30% 70%;
     gap: 5px;
-    max-height: 750px;
+    height: 80vh;
 }
 .chat-window {
     display: grid;
     grid-template-rows: auto max-content;
-    gap: 5px;
+    /* gap: 5px; */
 }
-.chats, .chat {
+.chats, .chat, .empty-window {
     background-color: var(--secondary);
     padding: 15px 20px;
     border-radius: 10px;
+    /* max-height: 90vh; */
+}
+.chat-window {
+    display: none;
+}
+.empty-window svg {
+    width: 60px;
+}
+.empty-window {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    fill-opacity: .8;
+    color: rgba(255, 255, 255, .8);
 }
 
 /* ALL CHATS */
-.chats .archive svg {
+.chats .random-chat svg {
     width: 27px;
 }
-.chats .archive {
+.chats .random-chat {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -49,7 +66,6 @@ main {
 .cards {
     overflow-y: auto;
     overflow-x: hidden;
-    height: 600px;
     scrollbar-color: var(--secondary);
 }
 .card {
@@ -66,15 +82,8 @@ main {
     text-decoration: none;
     position: relative;
 }
-.chat-pin {
-    position: absolute;
-    width: 20px;
-    top: 0;
-    left: 0;
-    right: 10px;
-}
 .card:hover {
-    background-color: color-mix(in oklab, var(--secondary), black 10%);
+    background-color: rgba(0, 0, 0, .3);
 }
 .card img {
     width: 60px;
@@ -88,6 +97,9 @@ main {
 }
 .card .content {
     overflow: hidden;
+}
+.card .info {
+    color: rgba(255, 255, 255, .7);
 }
 
 /* CHAT */
@@ -158,6 +170,7 @@ main {
     align-items: center;
     padding: 7px 7px;
     gap: 5px;
+    margin-top: 5px;
     background-color: color-mix(in oklab, var(--secondary), black 20%);
     border-radius: 10px;
 }
@@ -175,7 +188,7 @@ main {
     background-color: color-mix(in oklab, var(--secondary), black 15%);
     padding: 15px;
     border-radius: 3px;
-    height: 585px;
+    height: 60vh;
     overflow-y: auto;
 }
 .messages .txt {
@@ -196,4 +209,126 @@ main {
 .receive {
     border-radius: 5px 5px 5px 0;
     background-color: color-mix(in oklab, var(--secondary), black 35%);
+}
+
+/* MODAL */
+#usersProfile,
+#friendList {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .4);
+    padding: 15% 0;
+}
+.user-info {
+    background-color: var(--secondary);
+    margin: auto;
+    padding: 20px;
+    width: 25vw;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    display: grid;
+    justify-items: center;
+    box-shadow: 0 0 30px 3px black;
+}
+.user-info img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    /* margin-bottom: 10px; */
+}
+#close {
+    position: absolute;
+    top: 11px;
+    right: 10px;
+    width: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    color: lightgray;
+}
+#close:hover {
+    color: white;
+}
+.user-info > div {
+    position: relative;
+    margin-top: 10px;
+}
+.user-info > div svg {
+    width: 20px;
+    position: absolute;
+    top: 3px;
+}
+.user-info .users-username svg,
+.user-info .users-password svg {
+    right: -25px;
+}
+.user-info .users-email svg {
+    right: 15px;
+}
+#saveChangesBtn {
+    padding: 8px 40px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    font-size: 20px;
+    transition: .2s box-shadow linear;
+}
+#saveChangesBtn:hover {
+    box-shadow: 0 0 5px 1px var(--accent);
+}
+.friends {
+    background-color: var(--secondary);
+    margin: auto;
+    padding: 10px;
+    width: 30vw;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 30px 3px black;
+}
+.friend {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 10px;
+}
+.friend:hover {
+    background-color: rgba(0, 0, 0, .3);
+}
+.friend svg {
+    width: 50px;
+}
+.friend-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.friend-info img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+#closeBtn {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 20px;
+    background-color: var(--accent);
+    color: white;
+    transition: .2s box-shadow linear;
+}
+#closeBtn:hover {
+    box-shadow: 0 0 5px 1px var(--accent);
 }

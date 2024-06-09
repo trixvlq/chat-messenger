@@ -62,7 +62,7 @@ small {font-size: 0.750rem; /* 12px */}
 
 /* HEADER */
 header {
-    padding: 10px 15%;
+    padding: 10px 10vw;
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;
@@ -107,13 +107,17 @@ header {
     min-width: 150px;
     z-index: 1;
 }
-.dropdown-content a {
+.dropdown-content button {
     color: var(--text);
+    width: 100%;
+    background-color: transparent;
+    font-size: 17px;
     text-decoration: none;
-    padding: 10px 12px;
+    padding: 10px 0;
     display: block;
+    border: none;
 }
-.dropdown-content a:hover {
+.dropdown-content button:hover {
     background-color: color-mix(in oklab, var(--background), var(--text) 15%);
 }
 .show {
