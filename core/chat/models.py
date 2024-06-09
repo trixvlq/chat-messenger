@@ -26,37 +26,13 @@ class ChatMessage(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date_sent = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
+    content = models.TextField(blank=True, null=True)
+    file = models.FileField(upload_to=upload_file, blank=True, null=True)
+    image = models.ImageField(upload_to=upload_file, blank=True, null=True)
+    video = models.FileField(upload_to=upload_file, blank=True, null=True)
+    audio = models.FileField(upload_to=upload_file, blank=True, null=True)
 
     def read_message(self):
         self.is_read = True
         self.save()
 
-
-class TextMessage(ChatMessage):
-    content = models.TextField()
-
-    def __str__(self):
-        return f'{self.content} from {self.author} to {self.chat}'
-
-
-class FileMessage(ChatMessage):
-    file = models.FileField(upload_to=upload_file)
-
-
-class ImageMessage(ChatMessage):
-    image = models.ImageField(upload_to=upload_file)
-
-
-class VideoMessage(ChatMessage):
-    video = models.FileField(upload_to=upload_file)
-
-
-class AudioMessage(ChatMessage):
-    audio = models.FileField(upload_to=upload_file)
-
-
-class StickerMessage(ChatMessage):
-    sticker = models.FileField(upload_to=upload_file)

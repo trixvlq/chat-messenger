@@ -9,17 +9,21 @@ from .serializers import *
 class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
+    def get_author(self, user_id):
+        return User.objects.get(id=user_id)
+
+    @database_sync_to_async
     def get_chat(self, chat_id=1):
         return Chat.objects.get(id=chat_id)
 
     @database_sync_to_async
     def get_messages(self, chat_id):
-        messages = TextMessage.objects.filter(chat=chat_id)
-        return TextMessageSerializer(messages, many=True).data
+        messages = ChatMessage.objects.filter(chat=chat_id)
+        return ChatMessageSerializer(messages, many=True).data
 
     @database_sync_to_async
     def create_message(self, chat, user, message):
-        return TextMessage.objects.create(
+        return ChatMessage.objects.create(
             chat=chat,
             author=user,
             content=message
@@ -35,6 +39,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def read_message(self, message):
+        message = ChatMessage.objects.get(id=message)
         if message.is_read == False and message.author != self.user:
             message.is_read = True
             message.save()
@@ -42,18 +47,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
         self.user = self.scope["user"]
-        self.messages = await self.get_messages(self.chat_id)
 
         if self.user.is_authenticated:
             self.chat = await self.get_chat(self.chat_id)
-            self.room_group_name = f'{self.chat_id}'
+            self.room_group_name = f'chat_{self.chat_id}'
 
             if not self.chat:
                 await self.send(text_data=json.dumps({'error': 'Chat does not exist'}))
                 await self.close()
                 return
 
-            if not self.if_user_in_chat(self.user, self.chat):
+            if not await self.if_user_in_chat(self.user, self.chat):
                 await self.send(text_data=json.dumps({'error': 'You are not in this chat'}))
                 await self.close()
                 return
@@ -65,30 +69,31 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             await self.accept()
 
-            for message in self.messages:
-                await self.send(text_data=json.dumps(
-                    {
-                        'type': 'chat',
-                        'sender': message['sender'],
-                        'message': message['content'],
-                    }
-                ))
+            messages = await self.get_messages(self.chat_id)
+
+            for message in messages:
+                await self.send(text_data=json.dumps({
+                    'type': 'chat',
+                    'message': message,
+                }))
+                if not message['is_read'] and message['author'] != self.user.id:
+                    await self.read_message(message['id'])
 
     async def receive(self, text_data):
+        print(text_data)
         try:
-            print(f'shit')
-            print(text_data)
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
-            user_id = text_data_json['user']
+            user_id = text_data_json['message']['user']
             user = await self.get_user(user_id)
             msg = await self.create_message(self.chat, user, message)
-            msg = TextMessageSerializer(msg).data
+            msg_data = ChatMessageSerializer(msg).data
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'new_message',
-                    'message': msg,
+                    'message': msg_data,
+                    'msg': msg,
                     'sender': user_id
                 }
             )
@@ -97,12 +102,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         pass
 
     async def new_message(self, event):
-        print('chat')
         message = event['message']
-        user_id = event['sender']
-        user = await self.get_user(user_id)
-        # if user != self.user:
-        #     await self.read_message(TextMessage.objects.get(id=message))
+        user = await self.get_user(event['message']['author'])
+        if user != self.user:
+            await self.read_message(message['id'])
         await self.send(text_data=json.dumps(
             {
                 'type': 'new_message',
@@ -110,6 +113,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'message': message,
             }
         )
+        )
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
         )
 
 
@@ -122,8 +131,8 @@ class ChatsConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_messages(self, chat_id=1):
-        messages = TextMessage.objects.filter(chat=chat_id)
-        return [TextMessageSerializer(messages).data for message in messages]
+        messages = ChatMessage.objects.filter(chat=chat_id)
+        return [ChatMessageSerializer(messages).data for message in messages]
 
     @database_sync_to_async
     def get_user(self, user_id):
@@ -144,54 +153,13 @@ class ChatsConsumer(AsyncWebsocketConsumer):
 
             self.room_group_name = f"{self.chat.id}"
 
-            self.messages = self.get_messages(self.chat.id)
-
             await self.channel_layer.group_add(
                 self.room_group_name,
                 self.channel_name
             )
             await self.accept()
 
-    async def receive(self, text_data):
-        try:
-            text_data_json = json.loads(text_data)
-
-            message = text_data_json['message']
-
-            user_id = text_data_json['user']
-
-            sending_user = await self.get_user(user_id)
-
-            message = await self.create_message(self.chat, sending_user, message)
-
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'chat_message',
-                    'sender': user_id,
-                    'message': message.content
-                }
-            )
-
-        except json.JSONDecodeError:
-            await self.send(text_data=json.dumps({'error': 'Invalid JSON'}))
-            await self.close()
-            return
-
-        except Exception as e:
-            await self.send(text_data=json.dumps({'error': f'{str(e)} shit'}))
-            await self.close()
-            return
-
-    async def chat_message(self, event):
-        message = event['message']
-        user_id = event['sender']
-        user = await self.get_user(user_id)
-        await self.send(text_data=json.dumps(
-            {
-                'type': 'chat',
-                'sender': user.username,
-                'message': message,
-            }
-        )
-        )
+    async def receive(self):
+        for chat in self.chats:
+            new_messages = await self.get_messages(chat.id)
+            last_message = await self.get_last_message(chat.id)
