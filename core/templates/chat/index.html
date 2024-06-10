@@ -11,15 +11,15 @@
 <form id="form" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="text" name="message">
-    <input type="file" name="file">
-    <input type="file" name="image" accept="image/*">
-    <input type="file" name="video" accept="video/*">
-    <input type="file" name="audio" accept="audio/*">
+    <input type="file" name="file" placeholder="File">
+    <input type="file" name="image" accept="image/*" placeholder="Image">
+    <input type="file" name="video" accept="video/*" placeholder="Video">
+    <input type="file" name="audio" accept="audio/*" placeholder="Audio">
     <button type="submit">Send</button>
 </form>
 <div id="chats">
     {% for chat in chats %}
-    <a href="{% url 'chat' chat.id %}" class="chat-link" data-chat-id="{{ chat.id }}">{{ chat.name }}</a> - <span>{{ chat|get_unread_messages:user }}</span>
+        <a href="{% url 'chat' chat.id %}" class="chat-link" data-chat-id="{{ chat.id }}">{{ chat.name }}</a> - <span>{{ chat|get_unread_messages:user }}</span>
     {% endfor %}
 </div>
 <div id="messages">

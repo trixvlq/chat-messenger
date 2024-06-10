@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import *
 
-
+#паттерн DTO
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
@@ -12,7 +12,7 @@ class ChatMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatMessage
-        fields = ['id', 'chat', 'author','author_name', 'content', 'date_sent', 'is_read', 'file', 'image', 'video', 'audio']
+        fields = ['id', 'chat', 'author','author_name', 'content', 'date_sent', 'is_read', 'file']
 
     def get_author_name(self, obj):
         return obj.author.username

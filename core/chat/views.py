@@ -1,80 +1,84 @@
-import time
+import os
+import re
 
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
+from django.conf import settings
+from django.core.files.storage import default_storage, FileSystemStorage
 from django.db.models import Subquery, OuterRef
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
 from chat.models import *
-from chat.serializers import *
+from chat.serializers import ChatMessageSerializer, ChatSerializer
 
 
 def index(request):
     chats = Chat.objects.filter(members__in=[request.user])
     context = {
         'chats': chats,
-        'user': request.user
+        'user': request.user,
     }
     return render(request, 'chat/index.html', context)
 
 
 def chat(request, chat_id):
     chat = Chat.objects.get(id=chat_id)
-    texts = TextMessage.objects.filter(chat=chat_id)
-    images = ImageMessage.objects.filter(chat=chat_id)
-    files = FileMessage.objects.filter(chat=chat_id)
-    videos = VideoMessage.objects.filter(chat=chat_id)
-    audios = AudioMessage.objects.filter(chat=chat_id)
-    stickers = StickerMessage.objects.filter(chat=chat_id)
 
-    result = []
+    messages = ChatMessage.objects.filter(chat=chat).select_related('author').order_by('date_sent')
 
-    for i in texts:
-        result.append(TextMessageSerializer(i).data)
-    for i in images:
-        result.append(ImageMessageSerializer(i).data)
-    for i in files:
-        result.append(FileMessageSerializer(i).data)
-    for i in videos:
-        result.append(VideoMessageSerializer(i).data)
-    for i in audios:
-        result.append(AudioMessageSerializer(i).data)
-    for i in stickers:
-        result.append(StickerMessageSerializer(i).data)
-
-    result.sort(key=lambda x: x['date_sent'])
+    messages = ChatMessageSerializer(messages, many=True).data
 
     chat_serializer = ChatSerializer(chat)
 
     context = {
         'chat': chat_serializer.data,
-        'messages': result
+        'messages': messages
     }
     print(context)
     return JsonResponse(context)
 
-@csrf_exempt
-def upload_file(request):
-    if request.method == 'POST':
-        user_id = request.POST.get('user')
-        message = request.POST.get('message')
-        uploaded_file = request.FILES.get('file')
-
-        if uploaded_file:
-            file_name = default_storage.save(uploaded_file.name, ContentFile(uploaded_file.read()))
-            file_url = default_storage.url(file_name)
-        else:
-            file_url = None
-
-        response_data = {
-            'message': message,
-            'user': user_id,
-            'file_url': file_url,
-        }
-        return JsonResponse(response_data)
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 def test(request):
-    return render(request, 'chat/test.html')
+    chats = Chat.objects.filter(members__in=[request.user])
+    context = {
+        'chats': chats,
+        'user': request.user,
+    }
+    return render(request, 'chat/test.html', context)
+
+
+def sanitize_filename(filename):
+    filename = filename.replace(' ', '_')
+    filename = ''.join(c if c.isalnum() or c in ['.', '_', '-'] else '_' for c in filename)
+    return filename
+
+
+@csrf_exempt
+def upload_file(request, chat_id):
+    if request.method == 'POST' and request.FILES.get('file'):
+        file = request.FILES['file']
+        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+        now = timezone.now()
+
+        file_extension = os.path.splitext(file.name)[1]
+
+        unique_filename = f'{uuid.uuid4().hex}{file_extension}'
+
+        sanitized_filename = sanitize_filename(file.name)
+        sanitized_filename_with_extension = f'{unique_filename}'
+
+        file_path = os.path.join(f'{chat_id}/{now.year}/{now.month}/{now.day}', sanitized_filename_with_extension)
+
+        filename = fs.save(file_path, file)
+        file_url = fs.url(filename)
+
+        return JsonResponse({'success': True, 'file_url': file_url})
+    return JsonResponse({'success': False, 'error': 'File upload failed'}, status=400)
+
+
+def login_view(request):
+    return render(request, 'registration/login.html')
+
+
+def register_view(request):
+    return render(request, 'registration/register.html')

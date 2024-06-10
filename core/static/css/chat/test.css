@@ -1,0 +1,336 @@
+main {
+    margin: 5vh 10vw;
+    max-width: 100vw;
+    max-height: 100vw;
+    color: white;
+}
+.container {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    gap: 5px;
+    height: 80vh;
+}
+.chat-window {
+    display: grid;
+    grid-template-rows: auto max-content;
+    /* gap: 5px; */
+}
+.chats, .chat, .empty-window {
+    background-color: var(--secondary);
+    padding: 15px 20px;
+    border-radius: 10px;
+    /* max-height: 90vh; */
+}
+.chat-window {
+    display: none;
+}
+.empty-window svg {
+    width: 60px;
+}
+.empty-window {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    fill-opacity: .8;
+    color: rgba(255, 255, 255, .8);
+}
+
+/* ALL CHATS */
+.chats .random-chat svg {
+    width: 27px;
+}
+.chats .random-chat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.chats .chat-search form {
+    display: flex;
+    justify-content: stretch;
+}
+#searchBar {
+    padding: 7px;
+    width: 100%;
+    border-radius: 5px;
+    border: 0px;
+    outline: none;
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+#searchBar:focus {
+    outline: 3px var(--accent) solid;
+}
+.cards {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-color: var(--secondary);
+}
+.card {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: center;
+    margin-bottom: 5px;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 7px;
+    background: none;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+.card:hover {
+    background-color: rgba(0, 0, 0, .3);
+}
+.card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+.card .top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.card .content {
+    overflow: hidden;
+}
+.card .info {
+    color: rgba(255, 255, 255, .7);
+}
+
+/* CHAT */
+.upper-chat {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.upper-chat .pfp img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+}
+.upper-chat .person, .tools {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.upper-chat .person .name {
+    font-size: 27px;
+}
+.upper-chat .tools a {
+    text-decoration: none;
+    color: var(--text);
+}
+.upper-chat .tools svg {
+    width: 30px;
+}
+#load-files {
+    display: none;
+}
+#messageInput {
+    outline: none;
+    height: 30px;
+    width: 100%;
+    background: none;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    margin: 0 10px;
+    transition: .3s all ease-in;
+}
+#messageInput::placeholder {
+    color: white;
+    opacity: .6;
+}
+#sendMessage {
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+#sendMessage svg {
+    width: 30px;
+    padding: 8px;
+    border-radius: 7px;
+    fill: white;
+}
+#sendMessage svg:hover,
+.input-zone label:hover {
+    background-color: rgba(255, 255, 255, .1);
+}
+.input-zone form {
+    display: flex;
+    align-items: center;
+}
+.input-zone {
+    padding: 7px 7px;
+    gap: 5px;
+    margin-top: 5px;
+    background-color: color-mix(in oklab, var(--secondary), black 20%);
+    border-radius: 10px;
+}
+.input-zone label {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 7px;
+    width: 35px;
+}
+.input-zone label svg {
+    stroke: white;
+    fill: none;
+}
+.messages {
+    background-color: color-mix(in oklab, var(--secondary), black 15%);
+    padding: 15px;
+    border-radius: 3px;
+    height: 60vh;
+    overflow-y: auto;
+}
+.messages .txt {
+    display: grid;
+    width: 100%;
+}
+.messages .message {
+    width: max-content;
+    padding: 5px 12px;
+    margin-bottom: 10px;
+    max-width: 30vw;
+}
+.send {
+    border-radius: 5px 5px 0 5px;
+    background-color: var(--secondary);
+    justify-self: flex-end;
+}
+.receive {
+    border-radius: 5px 5px 5px 0;
+    background-color: color-mix(in oklab, var(--secondary), black 35%);
+}
+
+/* MODAL */
+#usersProfile,
+#friendList {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .4);
+    padding: 15% 0;
+}
+.user-info {
+    background-color: var(--secondary);
+    margin: auto;
+    padding: 20px;
+    width: 25vw;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    display: grid;
+    justify-items: center;
+    box-shadow: 0 0 30px 3px black;
+}
+.user-info img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    /* margin-bottom: 10px; */
+}
+#close {
+    position: absolute;
+    top: 11px;
+    right: 10px;
+    width: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    color: lightgray;
+}
+#close:hover {
+    color: white;
+}
+.user-info > div {
+    position: relative;
+    margin-top: 10px;
+}
+.user-info > div svg {
+    width: 20px;
+    position: absolute;
+    top: 3px;
+}
+.user-info .users-username svg,
+.user-info .users-password svg {
+    right: -25px;
+}
+.user-info .users-email svg {
+    right: 15px;
+}
+#saveChangesBtn {
+    padding: 8px 40px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    font-size: 20px;
+    transition: .2s box-shadow linear;
+}
+#saveChangesBtn:hover {
+    box-shadow: 0 0 5px 1px var(--accent);
+}
+.friends {
+    background-color: var(--secondary);
+    margin: auto;
+    padding: 10px;
+    width: 30vw;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 30px 3px black;
+}
+.friend {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 10px;
+}
+.friend:hover {
+    background-color: rgba(0, 0, 0, .3);
+}
+.friend svg {
+    width: 50px;
+}
+.friend-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.friend-info img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+#closeBtn {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 20px;
+    background-color: var(--accent);
+    color: white;
+    transition: .2s box-shadow linear;
+}
+#closeBtn:hover {
+    box-shadow: 0 0 5px 1px var(--accent);
+}

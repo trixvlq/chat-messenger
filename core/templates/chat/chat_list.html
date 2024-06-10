@@ -1,9 +1,0 @@
-{% if user.is_authenticated %}
-    <ul id="chat-list">
-        {% for chat in chats %}
-            <li class="chat-item" data-chat-id="{{ chat.id }}">{{ chat.name }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>You are not logged in.</p>
-{% endif %}

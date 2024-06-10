@@ -21,12 +21,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         messages = ChatMessage.objects.filter(chat=chat_id)
         return ChatMessageSerializer(messages, many=True).data
 
+    # Фабричный метод инкапсулирующий создание объектов
+
     @database_sync_to_async
-    def create_message(self, chat, user, message):
+    def create_message(self, chat, user, message, file):
         return ChatMessage.objects.create(
             chat=chat,
             author=user,
-            content=message
+            content=message,
+            file=file
         )
 
     @database_sync_to_async
@@ -78,15 +81,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
                 if not message['is_read'] and message['author'] != self.user.id:
                     await self.read_message(message['id'])
+        else:
+            await self.close()
 
     async def receive(self, text_data):
-        print(text_data)
+        print(f'text_data:{text_data}')
         try:
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
-            user_id = text_data_json['message']['user']
+            user_id = text_data_json['user']
+            file = text_data_json['file']
             user = await self.get_user(user_id)
-            msg = await self.create_message(self.chat, user, message)
+            print(message, user)
+            msg = await self.create_message(self.chat, user, message, file)
+            print(msg)
             msg_data = ChatMessageSerializer(msg).data
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -101,8 +109,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.disconnect()
         pass
 
+    # паттерн наблюдатель один объект уведомляет другие
+
     async def new_message(self, event):
         message = event['message']
+        print('shit')
+        print(message)
         user = await self.get_user(event['message']['author'])
         if user != self.user:
             await self.read_message(message['id'])
