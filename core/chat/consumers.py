@@ -10,7 +10,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_author(self, user_id):
-        return User.objects.get(id=user_id)
+        return ChatUser.objects.get(id=user_id)
 
     @database_sync_to_async
     def get_chat(self, chat_id=1):
@@ -38,7 +38,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_user(self, user_id):
-        return User.objects.get(id=user_id)
+        return ChatUser.objects.get(id=user_id)
 
     @database_sync_to_async
     def read_message(self, message):
@@ -52,6 +52,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user = self.scope["user"]
 
         if self.user.is_authenticated:
+            print('yep')
             self.chat = await self.get_chat(self.chat_id)
             self.room_group_name = f'chat_{self.chat_id}'
 
@@ -148,7 +149,7 @@ class ChatsConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_user(self, user_id):
-        return User.objects.get(id=user_id)
+        return ChatUser.objects.get(id=user_id)
 
     async def connect(self):
         self.user = self.scope["user"]
