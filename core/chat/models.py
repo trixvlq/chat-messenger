@@ -1,8 +1,8 @@
 import uuid
-
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+
 
 def upload_file(instance, filename):
     ext = filename.split('.')[-1]
@@ -13,9 +13,9 @@ def upload_file(instance, filename):
 
 class Chat(models.Model):
     name = models.CharField(max_length=255)
-    members = models.ManyToManyField(User)
+    members = models.ManyToManyField('ChatUser', related_name='chats')
     date_created = models.DateTimeField(auto_now_add=True)
-    room_name = models.CharField(max_length=255)
+    room_name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
@@ -23,16 +23,47 @@ class Chat(models.Model):
 
 class ChatMessage(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey('ChatUser', on_delete=models.CASCADE, related_name='messages')
     date_sent = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
-    content = models.TextField(blank=True, null=True)
+    content = models.TextField()
     file = models.FileField(upload_to=upload_file, blank=True, null=True)
-    image = models.ImageField(upload_to=upload_file, blank=True, null=True)
-    video = models.FileField(upload_to=upload_file, blank=True, null=True)
-    audio = models.FileField(upload_to=upload_file, blank=True, null=True)
 
     def read_message(self):
         self.is_read = True
         self.save()
 
+    def __str__(self):
+        return f'{self.author}:{self.content}'
+
+
+class ChatUser(AbstractUser):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    nickname = models.CharField(max_length=255,unique=True)
+    pfp = models.ImageField(upload_to='pfp', blank=True, null=True, default='static/images/pfp.png')
+    friends = models.ManyToManyField('self', blank=True, related_name='friendsset', symmetrical=True)
+    searching = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.nickname
+
+
+class SearchSession(models.Model):
+    user = models.ForeignKey('ChatUser', on_delete=models.CASCADE, related_name='searches')
+    date_started = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} started searching at {self.date_started}"
+
+
+class FriendRequest(models.Model):
+    from_user = models.ForeignKey(ChatUser, related_name='from_user', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(ChatUser, related_name='to_user', on_delete=models.CASCADE)
+    status = models.CharField(max_length=20,
+                              choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('declined', 'Declined')],
+                              default='pending')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"From: {self.from_user} To: {self.to_user}"

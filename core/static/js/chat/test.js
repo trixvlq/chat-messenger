@@ -20,9 +20,13 @@ window.onclick = function(event) {
 var userModal = document.getElementById('usersProfile');
 var profileBtn = document.getElementById('profileBtn');
 var spanClose = document.getElementById('close')
+
 var friendListModal = document.getElementById('friendList');
 var friendListBtn = document.getElementById('friendsBtn');
 var closeBtn = document.getElementById('closeBtn');
+
+var sendFileModal = document.getElementById('sendFile');
+var fileCancelBtn = document.getElementById('fileCancelBtn');
 
 profileBtn.onclick = function() {
     userModal.style.display = 'block';
@@ -30,12 +34,18 @@ profileBtn.onclick = function() {
 spanClose.onclick = function() {
     userModal.style.display = 'none';
 };
+
 friendListBtn.onclick = function() {
     friendListModal.style.display = 'block';
 };
 closeBtn.onclick = function() {
     friendListModal.style.display = 'none';
 };
+
+fileCancelBtn.onclick = function() {
+    sendFileModal.style.display = 'none';
+}
+
 window.onclick = function(event) {
     if (event.target == userModal) {
         userModal.style.display = "none";
@@ -43,5 +53,13 @@ window.onclick = function(event) {
     if (event.target == friendListModal) {
         friendListModal.style.display = 'none';
     }
+    if (event.target == sendFileModal) {
+        sendFileModal.style.display = 'none';
+    }
 };
 
+document.getElementById('load-files').addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+        sendFileModal.style.display = 'block';
+    };
+});

@@ -43,7 +43,6 @@ small {font-size: 0.750rem; /* 12px */}
     --secondary: rgb(54, 81, 120);
     --accent: rgb(92, 131, 193);
 }
-  
 ::-webkit-scrollbar {
     width: 3px;
 }
@@ -112,7 +111,6 @@ header {
     width: 100%;
     background-color: transparent;
     font-size: 17px;
-    text-decoration: none;
     padding: 10px 0;
     display: block;
     border: none;
@@ -122,4 +120,7 @@ header {
 }
 .show {
     display: block;
+}
+.dropdown-content a {
+    text-decoration: none;
 }
