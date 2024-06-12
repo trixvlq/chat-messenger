@@ -11,3 +11,5 @@ class ChatUserAdmin(admin.ModelAdmin):
 admin.site.register(ChatUser)
 admin.site.register(Chat)
 admin.site.register(ChatMessage)
+admin.site.register(SearchSession)
+admin.site.register(FriendRequest)

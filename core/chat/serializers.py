@@ -17,7 +17,7 @@ class ChatMessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'chat', 'author', 'author_name', 'content', 'date_sent', 'is_read', 'file']
 
     def get_author_name(self, obj):
-        return obj.author.username
+        return obj.author.nickname
 
 
 class UserSerializer(serializers.ModelSerializer):

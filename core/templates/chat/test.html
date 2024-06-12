@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +33,7 @@
         </svg>
         <div class="profile">
             <div class="picture">
-                <img src="{% static 'images/pfp.png' %}" alt="">
+                <img src="{{ user.pfp.url }}" alt="">
             </div>
             <div class="dropdown">
                 <svg class="dropbtn" onclick="dropdownFunction()" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -42,7 +43,9 @@
                 <div id="profileDropdown" class="dropdown-content">
                     <button id="profileBtn">Profile</button>
                     <button id="friendsBtn">Friend List</button>
-                    <a href="{% url 'logout' %}"><button id="logoutBtn">Logout</button></a>
+                    <a href="{% url 'logout' %}">
+                        <button id="logoutBtn">Logout</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -64,39 +67,41 @@
             {% if messages %}
             <div class="msg">
                 {% for message in messages %}
-                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
                 </div>
-            {% endif %}
-            <div class="random-chat">
-                <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.75 12c-.964 0-1.896-.43-2.625-1.211a4.683 4.683 0 0 1-1.219-2.86c-.082-1.154.27-2.215.991-2.988.72-.774 1.728-1.191 2.853-1.191 1.117 0 2.127.425 2.845 1.196.725.78 1.078 1.839.997 2.983-.079 1.083-.511 2.098-1.219 2.86-.728.78-1.659 1.211-2.623 1.211Z"></path>
-                    <path d="M21.93 20.25H9.572a1.299 1.299 0 0 1-1.032-.5 1.416 1.416 0 0 1-.246-1.21c.395-1.584 1.372-2.898 2.827-3.8 1.292-.8 2.936-1.24 4.63-1.24 1.727 0 3.328.422 4.627 1.221 1.458.897 2.437 2.219 2.83 3.823a1.418 1.418 0 0 1-.25 1.208 1.298 1.298 0 0 1-1.028.498Z"></path>
-                    <path d="M6.89 12.188c-1.65 0-3.1-1.534-3.234-3.42-.067-.965.234-1.858.843-2.513.603-.648 1.453-1.005 2.39-1.005.938 0 1.782.36 2.388 1.011.614.66.914 1.551.844 2.509-.135 1.884-1.584 3.418-3.231 3.418Z"></path>
-                    <path d="M9.968 13.66c-.824-.404-1.894-.605-3.077-.605-1.38 0-2.722.36-3.777 1.013-1.195.742-2 1.823-2.325 3.127a1.284 1.284 0 0 0 .225 1.095 1.187 1.187 0 0 0 .942.458h5.203a.375.375 0 0 0 .369-.308.806.806 0 0 1 .019-.088c.397-1.597 1.329-2.946 2.705-3.93a.375.375 0 0 0-.03-.627 3.81 3.81 0 0 0-.254-.136Z"></path>
-                </svg>
-                <h5>Random chat</h5>
+                {% endfor %}
             </div>
+            {% endif %}
+                <div class="random-chat">
+                    <a href="{% url 'random_chat' %}">
+                    <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.75 12c-.964 0-1.896-.43-2.625-1.211a4.683 4.683 0 0 1-1.219-2.86c-.082-1.154.27-2.215.991-2.988.72-.774 1.728-1.191 2.853-1.191 1.117 0 2.127.425 2.845 1.196.725.78 1.078 1.839.997 2.983-.079 1.083-.511 2.098-1.219 2.86-.728.78-1.659 1.211-2.623 1.211Z"></path>
+                        <path d="M21.93 20.25H9.572a1.299 1.299 0 0 1-1.032-.5 1.416 1.416 0 0 1-.246-1.21c.395-1.584 1.372-2.898 2.827-3.8 1.292-.8 2.936-1.24 4.63-1.24 1.727 0 3.328.422 4.627 1.221 1.458.897 2.437 2.219 2.83 3.823a1.418 1.418 0 0 1-.25 1.208 1.298 1.298 0 0 1-1.028.498Z"></path>
+                        <path d="M6.89 12.188c-1.65 0-3.1-1.534-3.234-3.42-.067-.965.234-1.858.843-2.513.603-.648 1.453-1.005 2.39-1.005.938 0 1.782.36 2.388 1.011.614.66.914 1.551.844 2.509-.135 1.884-1.584 3.418-3.231 3.418Z"></path>
+                        <path d="M9.968 13.66c-.824-.404-1.894-.605-3.077-.605-1.38 0-2.722.36-3.777 1.013-1.195.742-2 1.823-2.325 3.127a1.284 1.284 0 0 0 .225 1.095 1.187 1.187 0 0 0 .942.458h5.203a.375.375 0 0 0 .369-.308.806.806 0 0 1 .019-.088c.397-1.597 1.329-2.946 2.705-3.93a.375.375 0 0 0-.03-.627 3.81 3.81 0 0 0-.254-.136Z"></path>
+                    </svg>
+                    <h5>Random chat</h5>
+                    </a>
+                </div>
             <!-- all dms & groups -->
             <div class="cards" id="cards">
                 {% for chat in chats %}
                 <a href="{% url 'chat' chat.id %}" class="card chat-link" data-chat-id="{{ chat.id }}">
-                    <img src="{% static 'images/pfp.png' %}" alt="">
+                    <img src="{{ chat|get_other_pfp:request.user }}" alt="">
                     <div class="content">
                         <div class="top">
                             <div class="name">
-                                <p>{{ chat.name }}</p>
+                                <p>{{ chat.name|truncatechars:9 }}</p>
                             </div>
                             <!-- today(9:30AM), yesterday, 20.04.2024 -->
                             <div class="last-msg-date">
-                                <small>25.05.2024</small>
+                                <small>{{ chat|get_last_date }}</small>
                             </div>
                         </div>
                         <div class="info">
                             <div class="last-msg">
-                                <p>qwertyqwertyqdawdwadadwadwadaw</p>
+                                <p>{{ chat|get_last_message }}</p>
                             </div>
                         </div>
                     </div>
@@ -115,7 +120,7 @@
             <div class="chat">
                 <div class="upper-chat">
                     <div class="person">
-                        <div class="pfp" >
+                        <div class="pfp">
                             <img src="" alt="" id="chat-pfp">
                         </div>
                         <div class="name">
@@ -123,16 +128,20 @@
                         </div>
                     </div>
                     <div class="tools">
-                        <svg id="addUser" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13.5 12c2.475 0 4.662-2.33 4.876-5.195.106-1.439-.345-2.78-1.271-3.778C16.188 2.042 14.907 1.5 13.5 1.5c-1.418 0-2.7.54-3.61 1.518-.92.99-1.368 2.334-1.265 3.786C8.836 9.67 11.022 12 13.5 12Z"></path>
-                            <path d="M23.221 20.614c-.396-2.195-1.63-4.038-3.571-5.332-1.724-1.15-3.908-1.782-6.15-1.782-2.242 0-4.426.633-6.15 1.781-1.94 1.294-3.175 3.138-3.57 5.332-.091.503.031 1 .336 1.365a1.451 1.451 0 0 0 1.134.522h16.5a1.451 1.451 0 0 0 1.135-.522 1.66 1.66 0 0 0 .336-1.364Z"></path>
-                            <path d="M4.875 13.5v-1.875H6.75a.75.75 0 1 0 0-1.5H4.875V8.25a.75.75 0 0 0-1.5 0v1.875H1.5a.75.75 0 1 0 0 1.5h1.875V13.5a.75.75 0 1 0 1.5 0Z"></path>
-                        </svg>
-                        <svg id="infoUser" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
-                            <path d="M12 21.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
-                            <path d="M12 6.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
-                        </svg>
+                        <a href="" id="add-user">
+                            <svg id="addUser" fill="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.5 12c2.475 0 4.662-2.33 4.876-5.195.106-1.439-.345-2.78-1.271-3.778C16.188 2.042 14.907 1.5 13.5 1.5c-1.418 0-2.7.54-3.61 1.518-.92.99-1.368 2.334-1.265 3.786C8.836 9.67 11.022 12 13.5 12Z"></path>
+                                <path d="M23.221 20.614c-.396-2.195-1.63-4.038-3.571-5.332-1.724-1.15-3.908-1.782-6.15-1.782-2.242 0-4.426.633-6.15 1.781-1.94 1.294-3.175 3.138-3.57 5.332-.091.503.031 1 .336 1.365a1.451 1.451 0 0 0 1.134.522h16.5a1.451 1.451 0 0 0 1.135-.522 1.66 1.66 0 0 0 .336-1.364Z"></path>
+                                <path d="M4.875 13.5v-1.875H6.75a.75.75 0 1 0 0-1.5H4.875V8.25a.75.75 0 0 0-1.5 0v1.875H1.5a.75.75 0 1 0 0 1.5h1.875V13.5a.75.75 0 1 0 1.5 0Z"></path>
+                            </svg>
+                            <svg id="infoUser" fill="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
+                                <path d="M12 21.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
+                                <path d="M12 6.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="messages" id="messages">
@@ -213,16 +222,16 @@
     </div>
     <div id="friendList">
         <div class="friends">
-            {% for friend in user.friendsset.all %}
-                <div class="friend">
-                    <div class="friend-info">
-                        <img src="{{ friend.pfp.url }}" alt="">
-                        <h5>{{ friend.username}}</h5>
-                    </div>
-                    <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.125 2.25H4.875A3.379 3.379 0 0 0 1.5 5.625v9A3.379 3.379 0 0 0 4.875 18H6v3a.75.75 0 0 0 1.23.576L11.52 18h7.605a3.379 3.379 0 0 0 3.375-3.375v-9a3.379 3.379 0 0 0-3.375-3.375ZM7.5 11.625a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"></path>
-                    </svg>
+            {% for friend in user.friends.all %}
+            <div class="friend">
+                <div class="friend-info">
+                    <img src="{{ friend.pfp.url }}" alt="">
+                    <h5>{{ friend.nickname }}</h5>
                 </div>
+                <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.125 2.25H4.875A3.379 3.379 0 0 0 1.5 5.625v9A3.379 3.379 0 0 0 4.875 18H6v3a.75.75 0 0 0 1.23.576L11.52 18h7.605a3.379 3.379 0 0 0 3.375-3.375v-9a3.379 3.379 0 0 0-3.375-3.375ZM7.5 11.625a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"></path>
+                </svg>
+            </div>
             {% endfor %}
             <button id="closeBtn">Close</button>
         </div>
@@ -231,164 +240,168 @@
 <script>
     {% if user.is_authenticated %}
         let chats = document.querySelectorAll('.chat-link')
-        let chat_socket = null
-        chats.forEach(function (link) {
-            link.addEventListener('click', function (event) {
-                event.preventDefault()
-                let chat_id = this.getAttribute('data-chat-id')
-                if(chat_socket != null) {
-                    chat_socket.close();
-                    document.getElementById('messages').innerHTML = '';
-                }
-                chat_socket = new WebSocket('ws://localhost:8000/ws/chat/' + chat_id + '/');
-                let empty = document.getElementsByClassName('empty-window');
-                let chat_window = document.getElementsByClassName('chat-window');
-                console.log(empty)
-                empty[0].style.display = 'none';
-                chat_window[0].style.display = 'block';
-                function generateMessageHTML(message) {
-                    console.log(message);
-                    const date = formatDate(message.date_sent);
-                    let result = '';
-                    if (message.author_name === '{{ user.username }}') {
-                        result = `<div class="txt">
+    let chat_socket = null
+    chats.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault()
+            let chat_id = this.getAttribute('data-chat-id')
+            if(chat_socket != null) {
+                chat_socket.close();
+                document.getElementById('messages').innerHTML = '';
+            }
+            chat_socket = new WebSocket('ws://localhost:8000/ws/chat/' + chat_id + '/');
+            let empty = document.getElementsByClassName('empty-window');
+            let chat_window = document.getElementsByClassName('chat-window');
+            console.log(empty)
+            empty[0].style.display = 'none';
+            chat_window[0].style.display = 'block';
+            function generateMessageHTML(message) {
+                console.log(message);
+                const date = formatDate(message.date_sent);
+                let result = '';
+                if (message.author_name === '{{ user.nickname }}') {
+                    result = `<div class="txt">
                         <div class="message send">`;
-                    } else {
-                        result = `<div class="txt">
+                } else {
+                    result = `<div class="txt">
                         <div class="message receive">`;
-                    }
+                }
 
-                    if (message) {
-                        result += `<p>${message.author_name} - ${message.content}</p>`;
-                    }
+                if (message) {
+                    result += `<p>${message.author_name} - ${message.content}</p>`;
+                }
 
-                    if (message.file) {
-                        const fileExtension = message.file.split('.').pop().toLowerCase();
-                        console.log(fileExtension);
-                        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-                        if (imageExtensions.includes(fileExtension)) {
-                            result += `<p>${message.author_name}</p>
+                if (message.file) {
+                    const fileExtension = message.file.split('.').pop().toLowerCase();
+                    console.log(fileExtension);
+                    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+                    if (imageExtensions.includes(fileExtension)) {
+                        result += `<p>${message.author_name}</p>
                            <img src="${message.file}" alt="Image file" style="max-width: 100%; height: auto;">`;
-                        }
-                        if (fileExtension === 'pdf') {
-                            result += `<p>${message.author_name}</p>
+                    }
+                    if (fileExtension === 'pdf') {
+                        result += `<p>${message.author_name}</p>
                            <a href="${message.file}" target="_blank">Download File</a>`;
-                        }
-                    }
-
-                    result += `<span>${date}</span></div></div>`;
-
-                    return result;
-                }
-                chat_socket.onmessage = function (event) {
-                    let data = JSON.parse(event.data);
-                    console.log(data)
-                    if(data.type === 'error'){
-                        console.log(data.message)
-                    }
-                    if(data.type === 'new_message'){
-                        let messages = document.getElementById('messages')
-                        const messageHTML = generateMessageHTML(data.message);
-                        if (messageHTML) {
-                            messages.insertAdjacentHTML('beforeend', `<div>${messageHTML}</div>`);
-                        }
                     }
                 }
 
-                function formatDate(dateString) {
-                    let options = { hour: '2-digit', minute: '2-digit' };
-                    return new Date(dateString).toLocaleTimeString('en-GB', options);
+                result += `<span>${date}</span></div></div>`;
+
+                return result;
+            }
+            chat_socket.onmessage = function (event) {
+                let data = JSON.parse(event.data);
+                console.log(data)
+                if(data.type === 'error'){
+                    console.log(data.message)
                 }
-
-                fetch('{% url "chat" chat_id=0%}'.replace('0', chat_id))
-                    .then(response => response.json())
-                    .then(data => {
-                    data.messages.forEach(message => {
-                        let messages = document.getElementById('messages')
-                        console.log(message)
-                        const messageHTML = generateMessageHTML(message);
-                        if (messageHTML) {
-                            messages.insertAdjacentHTML('beforeend', `<div>${messageHTML}</div>`);
-                        }
-
-                    });
-                    let friend = data.other_user;
-                    console.log(friend)
-                    document.getElementById('chat-title').innerHTML = `Chat with ${friend.nickname}`;
-                    document.getElementById('chat-pfp').src = friend.pfp;
-                    if (friend.friends.includes({{ user.id }})) {
-                        console.log('frineds');
-                        document.getElementById('addUser').style.display = 'none';
+                if(data.type === 'new_message'){
+                    let messages = document.getElementById('messages')
+                    const messageHTML = generateMessageHTML(data.message);
+                    if (messageHTML) {
+                        messages.insertAdjacentHTML('beforeend', `<div>${messageHTML}</div>`);
                     }
-                })
+                }
+            }
 
-                let form = document.getElementById('form')
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    let formData = new FormData(form);
-                    formData.append('user', {{ user.id }});
-                    let file = formData.get('file');
-                    let messageContent = formData.get('message');
-                    if (messageContent.trim() === "") {
-                        alert("Поле не должно быть пустым и не должно содержать только пробелы.");
-                        return false;
-                    }
-                    if (file && file.size > 0) {
-                        let uploadFormData = new FormData();
-                        uploadFormData.append('file', file);
+            function formatDate(dateString) {
+                let options = { hour: '2-digit', minute: '2-digit' };
+                return new Date(dateString).toLocaleTimeString('en-GB', options);
+            }
 
-                        fetch('/upload-file/0/'.replace('0', chat_id), {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRFToken': getCookie('csrftoken')
-                            },
-                            body: uploadFormData
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                            if (data.success) {
-                                const fileUrl = data.file_url; // URL of the uploaded file
-                                sendMessage(messageContent, fileUrl);
-                            } else {
-                                console.error('File upload failed:', data.error);
-                            }
-                        });
-                    } else {
-                        sendMessage(messageContent, null);
+            fetch('{% url "chat" chat_id=0%}'.replace('0', chat_id))
+                .then(response => response.json())
+                .then(data => {
+                data.messages.forEach(message => {
+                    let messages = document.getElementById('messages')
+                    console.log(message)
+                    const messageHTML = generateMessageHTML(message);
+                    if (messageHTML) {
+                        messages.insertAdjacentHTML('beforeend', `<div>${messageHTML}</div>`);
                     }
 
-                    form.reset();
                 });
+                let friend = data.other_user;
+                console.log(friend)
+                document.getElementById('chat-title').innerHTML = `Chat with ${friend.nickname}`;
+                document.getElementById('chat-pfp').src = friend.pfp;
+                document.getElementById('add-user').href = `{% url "send_friendrequest" user_id=0%}`.replace('0', friend.id);
+                if (friend.friends.includes({{ user.id }})) {
+                    console.log('frineds');
+                    document.getElementById('addUser').style.display = 'none';
+                }
+                else {
+                    document.getElementById('addUser').style.display = 'inline';
+                }
+            })
 
-                function sendMessage(messageContent, fileUrl) {
-                    const message = {
-                        'message': messageContent,
-                        'user': {{ user.id }},
-                        'file': fileUrl,
-                    };
+            let form = document.getElementById('form')
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                let formData = new FormData(form);
+                formData.append('user', {{ user.id }});
+                let file = formData.get('file');
+                let messageContent = formData.get('message');
+                if (messageContent.trim() === "") {
+                    alert("Поле не должно быть пустым и не должно содержать только пробелы.");
+                    return false;
+                }
+                if (file && file.size > 0) {
+                    let uploadFormData = new FormData();
+                    uploadFormData.append('file', file);
 
-                    console.log(message);
-                    chat_socket.send(JSON.stringify(message));
+                    fetch('/upload-file/0/'.replace('0', chat_id), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: uploadFormData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                        if (data.success) {
+                            const fileUrl = data.file_url; // URL of the uploaded file
+                            sendMessage(messageContent, fileUrl);
+                        } else {
+                            console.error('File upload failed:', data.error);
+                        }
+                    });
+                } else {
+                    sendMessage(messageContent, null);
                 }
 
-                // Utility function to get CSRF token
-                function getCookie(name) {
-                    let cookieValue = null;
-                    if (document.cookie && document.cookie !== '') {
-                        const cookies = document.cookie.split(';');
-                        for (let i = 0; i < cookies.length; i++) {
-                            const cookie = cookies[i].trim();
-                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                break;
-                            }
+                form.reset();
+            });
+
+            function sendMessage(messageContent, fileUrl) {
+                const message = {
+                    'message': messageContent,
+                    'user': {{ user.id }},
+                    'file': fileUrl,
+                };
+
+                console.log(message);
+                chat_socket.send(JSON.stringify(message));
+            }
+
+            // Utility function to get CSRF token
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
                         }
                     }
-                    return cookieValue;
                 }
+                return cookieValue;
+            }
 
-            })
         })
+    })
     {% else %}
     let title = document.getElementById('app')
     title.innerHTML = 'You are not logged in'

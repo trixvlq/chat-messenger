@@ -33,17 +33,20 @@ class ChatMessage(models.Model):
         self.is_read = True
         self.save()
 
+    def __str__(self):
+        return f'{self.author}:{self.content}'
+
 
 class ChatUser(AbstractUser):
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
-    nickname = models.CharField(max_length=255)
+    nickname = models.CharField(max_length=255,unique=True)
     pfp = models.ImageField(upload_to='pfp', blank=True, null=True, default='static/images/pfp.png')
-    friends = models.ManyToManyField('self', blank=True, related_name='friendsset', symmetrical=False)
+    friends = models.ManyToManyField('self', blank=True, related_name='friendsset', symmetrical=True)
     searching = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.username
+        return self.nickname
 
 
 class SearchSession(models.Model):

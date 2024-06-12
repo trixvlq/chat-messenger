@@ -99,7 +99,7 @@ def register_view(request):
             login(request, user)
             return redirect('main')
         else:
-            messages.error(request, form.errors)
+            messages.info(request, form.errors)
             return render(request, 'registration/sign_up.html', {'form': form})
     form = UserRegisterForm()
     context = {
@@ -113,6 +113,7 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+        print(username, password, user)
         if user is not None:
             login(request, user)
             return redirect('main')
@@ -145,12 +146,12 @@ def search(request):
     if request.method == "POST":
         result = request.POST['search']
         user = find_user_by_any_data(result)
-        if user and user!=request.user:
-            chat,created = Chat.objects.get_or_create(
+        if user and user != request.user:
+            chat, created = Chat.objects.get_or_create(
                 name=f'{user.username} - {request.user.username}',
             )
             if created:
-                chat.members.add(request.user,user)
+                chat.members.add(request.user, user)
                 usernames = '-'.join(str(member.id) for member in chat.members.all())
                 chat.room_name = usernames
                 if Chat.objects.filter(room_name=chat.room_name).exists():
@@ -166,3 +167,50 @@ def logout_view(request):
     logout(request)
     return redirect('main')
 
+
+def send_friendrequest(request, user_id):
+    user = request.user
+    if user.friends.filter(id=user_id).exists():
+        messages.error(request, 'You are already friends')
+        return redirect('main')
+    frequest, created = FriendRequest.objects.get_or_create(from_user=user, to_user=ChatUser.objects.get(id=user_id))
+    if created:
+        messages.success(request, 'Friend request sent')
+        if FriendRequest.objects.filter(from_user=ChatUser.objects.get(id=user_id), to_user=user).exists():
+            frequest.status = 'accepted'
+            FriendRequest.objects.filter(from_user=ChatUser.objects.get(id=user_id), to_user=user).status = 'accepted'
+            frequest.save()
+            user.friends.add(ChatUser.objects.get(id=user_id))
+
+    else:
+        messages.error(request, 'Friend request already sent')
+    return redirect('main')
+
+
+def random_chat_lookup(request):
+    sesh, created = SearchSession.objects.get_or_create(user=request.user)
+    if created:
+        friends_ids = list(request.user.friends.values_list('id', flat=True))
+        rchat = SearchSession.objects.exclude(user=request.user).exclude(user__in=friends_ids).order_by('?').first()
+        if rchat:
+            if rchat.user in request.user.chats.all():
+                print('i guess')
+            else:
+                chat = Chat.objects.create(
+                    name='Annonymous Chat',
+                    room_name=f'{request.user.id}-{rchat.user.id}'
+                )
+
+                chat.members.set([request.user, rchat.user])
+
+                chat.save()
+
+                sesh.delete()
+                rchat.delete()
+                return redirect('main')
+        else:
+            chat = None
+    else:
+        chat = None
+
+    return redirect('main')

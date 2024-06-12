@@ -40,12 +40,14 @@ main {
 .chats .random-chat svg {
     width: 27px;
 }
-.chats .random-chat {
+.chats .random-chat a {
     display: flex;
     align-items: center;
     gap: 5px;
     margin-bottom: 10px;
     cursor: pointer;
+    text-decoration: none;
+    color: white;
 }
 .chats .chat-search form {
     display: flex;
@@ -125,7 +127,7 @@ main {
 }
 .upper-chat .tools a {
     text-decoration: none;
-    color: var(--text);
+    color: white;
 }
 .upper-chat .tools svg {
     width: 30px;
